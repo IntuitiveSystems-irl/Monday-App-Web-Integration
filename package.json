@@ -1,0 +1,16 @@
+{
+  "name": "backoffice-systems",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vercel dev",
+    "build": "echo 'Static site - no build needed'",
+    "deploy": "vercel --prod"
+  },
+  "dependencies": {
+    "resend": "^3.0.0"
+  },
+  "devDependencies": {
+    "vercel": "^33.0.0"
+  }
+}

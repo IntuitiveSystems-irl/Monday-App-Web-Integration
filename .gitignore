@@ -1,0 +1,58 @@
+# Dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment files
+.env
+.env.local
+.env.production
+.env.staging
+.env.*.local
+*.backup.*
+remote.env
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+logs/
+*.log
+
+# Build outputs
+.next/
+out/
+build/
+dist/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Backup files
+*_backup_*
+*.backup
+
+# Security sensitive files
+*.pem
+*.key
+*.crt
+credentials.json
+secrets.json
+CREDENTIALS.md
+
+# Deployment scripts
+*.exp
+
+# Archives
+*.zip
+*.tar.gz

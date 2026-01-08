@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Smart Systems - 90 Second Pitch</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: #000;
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+            touch-action: pan-y;
+        }
+
+        .top-bar {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 16px 20px;
+            border-bottom: 3px solid #C1403D;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand img {
+            height: 32px;
+            width: auto;
+        }
+
+        .brand-text {
+            font-size: 11px;
+            font-weight: 700;
+            color: #1B365D;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .container {
+            max-width: 100%;
+            padding: 20px;
+        }
+
+        section {
+            background: white;
+            margin: 20px 0;
+            padding: 30px 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 300;
+            margin-bottom: 16px;
+            color: #1B365D;
+        }
+
+        h2 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1B365D;
+        }
+
+        h3 {
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #C1403D;
+            margin-bottom: 12px;
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.6;
+            margin-bottom: 16px;
+            color: #1B365D;
+            opacity: 0.9;
+        }
+
+        .service-card, .qualifier-card, .process-card {
+            background: #f8f9fa;
+            padding: 24px;
+            margin: 16px 0;
+            border-radius: 8px;
+            border-left: 4px solid #C1403D;
+        }
+
+        .price {
+            font-size: 24px;
+            font-weight: 300;
+            color: #1B365D;
+            margin: 8px 0;
+        }
+
+        .duration {
+            font-size: 13px;
+            color: #1B365D;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            font-size: 14px;
+            line-height: 1.8;
+            color: #1B365D;
+            opacity: 0.85;
+            padding-left: 20px;
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        ul li:before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: #C1403D;
+        }
+
+        .form-group {
+            margin-bottom: 16px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #C1403D;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            font-family: inherit;
+            font-size: 16px;
+            border: 2px solid rgba(193, 64, 61, 0.3);
+            background: white;
+            color: #1B365D;
+            border-radius: 6px;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .submit-button {
+            width: 100%;
+            background: #C1403D;
+            color: white;
+            padding: 16px;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .submit-button:active {
+            background: #A03532;
+        }
+
+        .number {
+            font-size: 36px;
+            font-weight: 300;
+            color: #C1403D;
+            margin-bottom: 12px;
+        }
+
+        .highlight-box {
+            background: rgba(193, 64, 61, 0.05);
+            border-left: 4px solid #C1403D;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+
+        .highlight-box h4 {
+            color: #C1403D;
+            font-size: 16px;
+            margin-bottom: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="brand">
+            <img src="https://lightslategrey-chamois-591019.hostingersite.com/wp-content/uploads/2026/01/ll.jpg" alt="BackOffice Systems">
+            <span class="brand-text">BackOffice Systems</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Hero Section -->
+        <section>
+            <h1>Smart Systems Implementation</h1>
+            <p>We build your systems, automate them, then add intelligence and visibility so they improve over time.</p>
+        </section>
+
+        <!-- Services Section -->
+        <section>
+            <h2>How It Works</h2>
+            
+            <div class="service-card">
+                <h3>Build the System</h3>
+                <div class="price">Phase 1</div>
+                <div class="duration">Foundation</div>
+                <p>We design and implement your core operational systems with proper integration and data structure. Already using Monday, Airtable, or other tools? We work with what you have and enhance it.</p>
+                <ul>
+                    <li>Workflow analysis and system design</li>
+                    <li>Integration across existing tools</li>
+                    <li>Structured data capture</li>
+                    <li>Process documentation</li>
+                </ul>
+            </div>
+
+            <div class="service-card">
+                <h3>Automate the System</h3>
+                <div class="price">Phase 2</div>
+                <div class="duration">Implementation</div>
+                <p>Once core systems are in place, we configure them to support ongoing visibility and adaptive improvement.</p>
+                <ul>
+                    <li>Event tracking across workflows</li>
+                    <li>Automation logic that responds to usage</li>
+                    <li>Manager-facing dashboards for oversight</li>
+                    <li>Real-time process monitoring</li>
+                </ul>
+            </div>
+
+            <div class="service-card">
+                <h3>Smart Systems Subscription</h3>
+                <div class="price">Monthly</div>
+                <div class="duration">Living Infrastructure</div>
+                <p>Automated oversight, adaptive recommendations, and continuous system refinement. Your team monitors and adjusts systems instead of doing manual work.</p>
+                <ul>
+                    <li>Automated agent monitoring workflows</li>
+                    <li>Visual interface for real-time observation</li>
+                    <li>Pattern detection and operational insights</li>
+                    <li>Team training on system oversight</li>
+                    <li>Suggested optimizations based on behavior</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Who This Is For Section -->
+        <section>
+            <h2>Who This Is For</h2>
+            
+            <div class="qualifier-card">
+                <h3>Good Fit</h3>
+                <ul>
+                    <li>Established teams (5+ people) with recurring workflows</li>
+                    <li>Operations involving handoffs, approvals, or dependencies</li>
+                    <li>Multiple systems that need to work together</li>
+                    <li>Already using tools like Monday, Airtable, or similar (we enhance what you have)</li>
+                    <li>Leaders who want visibility without manual reporting</li>
+                    <li>Organizations open to automation + intelligent oversight</li>
+                </ul>
+            </div>
+
+            <div class="qualifier-card">
+                <h3>Better Fit for One-Time Engagement</h3>
+                <ul>
+                    <li>Teams seeking a specific system or automation build</li>
+                    <li>Clear requirements and defined workflows</li>
+                    <li>Internal teams that will manage systems after handoff</li>
+                    <li>Prefer project-based over subscription model</li>
+                </ul>
+            </div>
+
+            <div class="qualifier-card">
+                <h3>Not a Fit</h3>
+                <ul>
+                    <li>Looking for generic tools or templates</li>
+                    <li>Expecting automation without process ownership</li>
+                    <li>No capacity to act on insights or recommendations</li>
+                    <li>Primarily cost-driven, not outcome-driven</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Process Section -->
+        <section>
+            <h2>Your Journey to Smart Systems</h2>
+            
+            <div class="process-card">
+                <div class="number">01</div>
+                <h3>Discovery & Design</h3>
+                <p>We map your workflows and design your automated agents + visual dashboard</p>
+            </div>
+
+            <div class="process-card">
+                <div class="number">02</div>
+                <h3>Build & Deploy</h3>
+                <p>We integrate systems, build agents, and launch your interactive management dashboard</p>
+            </div>
+
+            <div class="process-card">
+                <div class="number">03</div>
+                <h3>Ongoing Optimization</h3>
+                <p>Your subscription includes 24/7 automation + AI-powered improvement suggestions</p>
+            </div>
+
+            <div class="highlight-box">
+                <h4>Subscription Model — What's Included</h4>
+                <ul>
+                    <li>Automated agent monitoring workflows and system events</li>
+                    <li>Visual interface for managers to observe processes in real time</li>
+                    <li>Pattern detection and operational insights</li>
+                    <li>Suggested optimizations based on actual system behavior</li>
+                    <li>Ongoing system tuning and automation adjustments</li>
+                </ul>
+                <p style="margin-top: 16px; font-size: 13px; opacity: 0.7; font-style: italic;">Designed for operations managers overseeing complex processes. Asynchronous support with optional quarterly reviews. Pricing based on system complexity and data volume.</p>
+            </div>
+
+            <div class="highlight-box">
+                <h4>What Happens to Your Team?</h4>
+                <p>We don't replace people — we upgrade them. When automation handles routine tasks, your employees are trained to monitor and optimize the systems. They work fewer hours at a higher rate, making them more valuable while reducing your costs.</p>
+                <p style="margin-top: 12px; font-size: 14px;"><strong>Example:</strong> A 40-hour/week employee at $25/hour ($1,000/week) becomes a 20-hour/week system manager at $35/hour ($700/week). Same person, higher skills, 30% cost savings.</p>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section>
+            <h2>Request Introduction</h2>
+            <form id="contactForm">
+                <div class="form-group">
+                    <label for="company">Company Name</label>
+                    <input type="text" id="company" name="company" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="team-size">Team Size</label>
+                    <select id="team-size" name="team-size" required>
+                        <option value="">Select team size</option>
+                        <option value="1-5">1-5 people</option>
+                        <option value="6-15">6-15 people</option>
+                        <option value="16-50">16-50 people</option>
+                        <option value="50+">50+ people</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="engagement-type">Preferred Engagement</label>
+                    <select id="engagement-type" name="engagement-type" required>
+                        <option value="">Select an option</option>
+                        <option value="assessment">Systems Assessment</option>
+                        <option value="full-implementation">Full Implementation</option>
+                        <option value="subscription">Smart Systems Subscription</option>
+                        <option value="consultation">Initial Consultation</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="challenge">Tell us about your operations</label>
+                    <textarea id="challenge" name="challenge" required></textarea>
+                </div>
+                <button type="submit" class="submit-button">Send Inquiry</button>
+            </form>
+            <p style="text-align: center; margin-top: 20px; font-size: 14px;">
+                Or email directly: <a href="mailto:info@manageonsite.com" style="color: #C1403D; text-decoration: none; border-bottom: 1px solid #C1403D;">info@manageonsite.com</a>
+            </p>
+        </section>
+    </div>
+
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const button = this.querySelector('.submit-button');
+            button.textContent = 'Sending...';
+            button.disabled = true;
+            
+            const formData = {
+                company: document.getElementById('company').value,
+                email: document.getElementById('email').value,
+                message: document.getElementById('challenge').value
+            };
+            
+            try {
+                const response = await fetch('/send-email.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                if (response.ok) {
+                    button.textContent = 'Sent! We\'ll be in touch soon.';
+                    button.style.background = '#2d7a3e';
+                    this.reset();
+                    
+                    setTimeout(() => {
+                        button.textContent = 'Send Inquiry';
+                        button.style.background = '';
+                        button.disabled = false;
+                    }, 3000);
+                } else {
+                    throw new Error('Failed to send');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                button.textContent = 'Error - Try Email Instead';
+                button.style.background = '#C1403D';
+                
+                setTimeout(() => {
+                    button.textContent = 'Send Inquiry';
+                    button.style.background = '';
+                    button.disabled = false;
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>

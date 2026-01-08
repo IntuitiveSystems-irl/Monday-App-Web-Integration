@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BackOffice Systems — Operational Cleanup & Automation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            line-height: 1.5;
+            color: #1B365D;
+            background-color: #fff;
+        }
+
+        .top-bar {
+            background: #fff;
+            padding: 16px 0;
+            border-bottom: 3px solid #C1403D;
+        }
+
+        .top-bar .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand img {
+            height: 32px;
+            width: auto;
+            background: transparent;
+            mix-blend-mode: multiply;
+        }
+
+        .brand-text {
+            font-size: 11px;
+            font-weight: 700;
+            color: #1B365D;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 40px;
+        }
+
+        .hero {
+            background: #1B365D;
+            color: #fff;
+            padding: 100px 0 120px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #particles-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #C1403D 0%, #C1403D 33%, transparent 33%);
+        }
+
+        h1 {
+            font-size: 52px;
+            font-weight: 300;
+            line-height: 1.2;
+            margin-bottom: 24px;
+            color: #fff;
+            max-width: 800px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .subhead {
+            font-size: 20px;
+            line-height: 1.6;
+            color: #fff;
+            font-weight: 400;
+            opacity: 0.85;
+            max-width: 600px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .main-content {
+            padding: 80px 0;
+        }
+
+        .section-label {
+            font-size: 11px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #C1403D;
+            margin-bottom: 32px;
+        }
+
+        .offer-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            background: #C1403D;
+            border: 2px solid #C1403D;
+            margin-bottom: 60px;
+        }
+
+        .offer-cell {
+            background: #fff;
+            padding: 48px;
+        }
+
+        .offer-cell h3 {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #1B365D;
+            margin-bottom: 16px;
+        }
+
+        .offer-cell .price {
+            font-size: 36px;
+            font-weight: 300;
+            color: #1B365D;
+            margin-bottom: 8px;
+        }
+
+        .offer-cell .duration {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 32px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .offer-cell p {
+            font-size: 15px;
+            line-height: 1.7;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        ul li {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #333;
+            padding-left: 20px;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        ul li:before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: #C1403D;
+            font-weight: normal;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 80px 0;
+            background: #fff;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #1B365D;
+            color: #fff;
+            padding: 18px 60px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .cta-button:hover {
+            background: #0F2340;
+        }
+
+        footer {
+            background: #1B365D;
+            color: #fff;
+            padding: 60px 0 40px;
+            margin-top: 0;
+        }
+
+        footer .brand-footer {
+            font-size: 11px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        footer .tagline {
+            font-size: 13px;
+            color: #fff;
+            margin-bottom: 20px;
+            opacity: 0.7;
+        }
+
+        footer .contact {
+            font-size: 13px;
+            color: #fff;
+            opacity: 0.7;
+        }
+
+        footer .contact a {
+            color: #fff;
+            text-decoration: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        footer .contact a:hover {
+            border-bottom-color: #fff;
+        }
+
+        .qualifier {
+            background: #fff;
+            padding: 48px;
+            margin-bottom: 60px;
+            border-left: 4px solid #C1403D;
+        }
+
+        .qualifier h3 {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #1B365D;
+            margin-bottom: 24px;
+        }
+
+        .qualifier-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 48px;
+        }
+
+        .qualifier-col h4 {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #666;
+            margin-bottom: 16px;
+        }
+
+        .qualifier-col ul li {
+            font-size: 14px;
+            color: #333;
+        }
+
+        .process {
+            background: #1B365D;
+            color: #FFF8F0;
+            padding: 80px 0;
+            margin-bottom: 0;
+        }
+
+        .process h3 {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #C1403D;
+            margin-bottom: 32px;
+        }
+
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            margin-bottom: 48px;
+        }
+
+        .process-step {
+            border-left: 2px solid rgba(193, 64, 61, 0.3);
+            padding-left: 20px;
+        }
+
+        .process-step .number {
+            font-size: 28px;
+            font-weight: 300;
+            color: #C1403D;
+            margin-bottom: 12px;
+        }
+
+        .process-step h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .process-step p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #fff;
+            opacity: 0.8;
+        }
+
+        .intake-list {
+            background: rgba(255, 248, 240, 0.05);
+            padding: 32px;
+            border-radius: 4px;
+        }
+
+        .intake-list h4 {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #C1403D;
+            margin-bottom: 16px;
+        }
+
+        .intake-list ul li {
+            color: #fff;
+            opacity: 0.85;
+        }
+
+        .contact-section {
+            background: #fff;
+            padding: 80px 0;
+        }
+
+        .contact-section h3 {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #1B365D;
+            margin-bottom: 32px;
+        }
+
+        .contact-form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #1B365D;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 14px 16px;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 15px;
+            border: 2px solid #ddd;
+            background: #fff;
+            color: #333;
+            transition: border-color 0.2s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #1B365D;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .submit-button {
+            background: #1B365D;
+            color: #fff;
+            padding: 16px 48px;
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background: #0F2340;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(27, 54, 93, 0.3);
+        }
+
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 24px;
+            }
+
+            .hero {
+                padding: 60px 0 80px;
+            }
+
+            h1 {
+                font-size: 36px;
+            }
+
+            .subhead {
+                font-size: 18px;
+            }
+
+            .offer-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .offer-cell {
+                padding: 36px 24px;
+            }
+
+            .cta-button {
+                padding: 16px 48px;
+                font-size: 13px;
+            }
+
+            .qualifier {
+                padding: 32px 24px;
+            }
+
+            .qualifier-grid {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+
+            .process-steps {
+                grid-template-columns: 1fr;
+                gap: 32px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div class="container">
+            <div class="brand">
+                <img src="https://lightslategrey-chamois-591019.hostingersite.com/wp-content/uploads/2026/01/ll.jpg" alt="BackOffice Systems">
+                <span class="brand-text">BackOffice Systems</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="hero">
+        <canvas id="particles-canvas"></canvas>
+        <div class="container">
+            <h1>On-site operational systems integration</h1>
+            <p class="subhead">We assess your current workflows on-site, then design and implement custom automation solutions.</p>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div class="container">
+            <div class="section-label">Services</div>
+            
+            <div class="offer-grid">
+                <div class="offer-cell">
+                    <h3>On-Site Assessment</h3>
+                    <div class="price">1–2 Weeks</div>
+                    <div class="duration">On Location</div>
+                    <p>Comprehensive review of your current systems, workflows, and operational processes.</p>
+                    <ul>
+                        <li>Direct observation of workflows</li>
+                        <li>Team interviews and documentation</li>
+                        <li>Integration opportunity analysis</li>
+                        <li>Custom automation proposal</li>
+                    </ul>
+                </div>
+                
+                <div class="offer-cell">
+                    <h3>Implementation</h3>
+                    <div class="price">Custom Scope</div>
+                    <div class="duration">2 Weeks – 6 Months</div>
+                    <p>Tailored automation and integration build based on assessment findings.</p>
+                    <ul>
+                        <li>System integration and automation</li>
+                        <li>Process optimization</li>
+                        <li>Team training and documentation</li>
+                        <li>Pricing based on complexity</li>
+                    </ul>
+                </div>
+                
+                <div class="offer-cell">
+                    <h3>Systems Build Package (Remote)</h3>
+                    <div class="price">Fixed Scope</div>
+                    <div class="duration">Remote Delivery</div>
+                    <p>A scoped system design and build delivered remotely. We implement the core automation and provide documentation so your team can operate it confidently.</p>
+                    <ul>
+                        <li>Workflow design + system mapping</li>
+                        <li>Automation / integration build (tool-dependent)</li>
+                        <li>Documentation + handoff checklist</li>
+                        <li>Optional async support window</li>
+                    </ul>
+                    <p style="margin-top: 20px; font-size: 14px; color: #666;">Pricing based on scope</p>
+                </div>
+            </div>
+
+            <div class="qualifier">
+                <h3>Who This Is For</h3>
+                <div class="qualifier-grid">
+                    <div class="qualifier-col">
+                        <h4>On-Site Systems Consulting — Good Fit</h4>
+                        <ul>
+                            <li>Established operations (5+ person teams)</li>
+                            <li>Cross-department workflows with handoffs and approvals</li>
+                            <li>Multiple tools that need integration (CRM, accounting, scheduling, inbox, docs)</li>
+                            <li>Open to on-site observation and stakeholder interviews</li>
+                            <li>Ready for phased implementation over time</li>
+                        </ul>
+                    </div>
+                    <div class="qualifier-col">
+                        <h4>Systems Build Package — Better Fit</h4>
+                        <ul>
+                            <li>You want a specific system built (not a full operational discovery)</li>
+                            <li>Requirements are clear enough to scope upfront</li>
+                            <li>Your team will implement and own the workflow internally</li>
+                            <li>Prefer remote delivery with documentation and handoff</li>
+                            <li>Want speed, clarity, and fixed scope</li>
+                        </ul>
+                    </div>
+                </div>
+                <p style="font-size: 13px; color: #666; margin-top: 24px; text-align: center;">If you're unsure, submit an introduction request and we'll route you to the right engagement.</p>
+            </div>
+            
+            <div class="qualifier" style="border-left-color: #666;">
+                <h3>Not a Fit (For Either Engagement)</h3>
+                <ul style="max-width: 700px;">
+                    <li>Looking for generic templates or "one-size-fits-all" automation</li>
+                    <li>Expecting immediate results without internal ownership</li>
+                    <li>No time or capacity to implement changes</li>
+                    <li>Primary goal is cost-only (not operational outcomes)</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="process">
+        <div class="container">
+            <h3>Process</h3>
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="number">01</div>
+                    <h4>Introduction</h4>
+                    <p>Submit inquiry to discuss your needs</p>
+                </div>
+                <div class="process-step">
+                    <div class="number">02</div>
+                    <h4>On-Site Assessment</h4>
+                    <p>1-2 week evaluation of your operations</p>
+                </div>
+                <div class="process-step">
+                    <div class="number">03</div>
+                    <h4>Implementation</h4>
+                    <p>Custom build and integration (2 weeks - 6 months)</p>
+                </div>
+            </div>
+
+            <div class="intake-list">
+                <h4>Initial Information</h4>
+                <ul>
+                    <li>Company overview and team size</li>
+                    <li>Current systems and tools in use</li>
+                    <li>Primary operational challenges</li>
+                    <li>Timeline and budget expectations</li>
+                    <li>Location for on-site assessment</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="contact-section" id="contact">
+        <div class="container">
+            <h3>Request Introduction</h3>
+            <form class="contact-form" id="contactForm">
+                <div class="form-group">
+                    <label for="company">Company Name</label>
+                    <input type="text" id="company" name="company" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="team-size">Team Size</label>
+                    <input type="text" id="team-size" name="team-size" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="location">Location</label>
+                    <input type="text" id="location" name="location" placeholder="City, State" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="engagement-type">Preferred Engagement</label>
+                    <select id="engagement-type" name="engagement-type" required style="width: 100%; padding: 14px 16px; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 15px; border: 2px solid #ddd; background: #fff; color: #333;">
+                        <option value="">Select preference</option>
+                        <option value="on-site">On-Site Assessment</option>
+                        <option value="remote">Remote Consultation</option>
+                        <option value="flexible">Flexible / Discuss</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="tools">Current Systems & Tools</label>
+                    <textarea id="tools" name="tools" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="challenge">What You're Looking to Improve</label>
+                    <textarea id="challenge" name="challenge" required></textarea>
+                </div>
+                
+                <button type="submit" class="submit-button">Submit Request</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="cta-section">
+        <p style="font-size: 14px; color: #666; margin-bottom: 16px;">Or email directly</p>
+        <a href="mailto:info@manageonsite.com" style="color: #1B365D; font-weight: 600; text-decoration: none; border-bottom: 2px solid #C1403D;">info@manageonsite.com</a>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="brand-footer">BackOffice Systems</div>
+            <div class="tagline">Operational Cleanup & Automation</div>
+            <div class="contact"><a href="mailto:info@manageonsite.com">info@manageonsite.com</a></div>
+        </div>
+    </footer>
+
+    <script>
+        // Particle animation for hero section
+        const canvas = document.getElementById('particles-canvas');
+        const ctx = canvas.getContext('2d');
+        
+        canvas.width = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+        
+        const particles = [];
+        const particleCount = 50;
+        const connectionDistance = 150;
+        
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.radius = Math.random() * 2 + 1;
+            }
+            
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+            
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(193, 64, 61, 0.6)';
+                ctx.fill();
+            }
+        }
+        
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
+        }
+        
+        function connectParticles() {
+            for (let i = 0; i < particleCount; i++) {
+                const angle = (i / particleCount) * Math.PI * 2;
+                particles[i].x = 10 + Math.cos(angle) * 3; 
+                particles[i].y = 3 + Math.sin(angle) * 3;
+            }
+            for (let i = 0; i < particles.length; i++) {
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (distance < connectionDistance) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(193, 64, 61, ${0.15 * (1 - distance / connectionDistance)})`;
+                        ctx.lineWidth = 1;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+        }
+        
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            connectParticles();
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+        
+        window.addEventListener('resize', () => {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+        });
+
+        // Form submission
+        document.getElementById('contactForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const submitButton = e.target.querySelector('.submit-button');
+            const originalText = submitButton.textContent;
+            submitButton.textContent = 'Sending...';
+            submitButton.disabled = true;
+            
+            const formData = {
+                company: document.getElementById('company').value,
+                email: document.getElementById('email').value,
+                teamSize: document.getElementById('team-size').value,
+                location: document.getElementById('location').value,
+                engagementType: document.getElementById('engagement-type').value,
+                tools: document.getElementById('tools').value,
+                challenge: document.getElementById('challenge').value
+            };
+            
+            try {
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    submitButton.textContent = 'Sent Successfully!';
+                    submitButton.style.background = '#2d7a3e';
+                    e.target.reset();
+                    
+                    setTimeout(() => {
+                        submitButton.textContent = originalText;
+                        submitButton.style.background = '';
+                        submitButton.disabled = false;
+                    }, 3000);
+                } else {
+                    throw new Error(data.error || 'Failed to send');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                submitButton.textContent = 'Error - Try Email Instead';
+                submitButton.style.background = '#C1403D';
+                
+                setTimeout(() => {
+                    submitButton.textContent = originalText;
+                    submitButton.style.background = '';
+                    submitButton.disabled = false;
+                }, 3000);
+            }
+        });
+    </script>
+</body>
+</html>

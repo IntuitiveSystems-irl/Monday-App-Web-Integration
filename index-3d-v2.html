@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BackOffice Systems — Immersive 3D Experience</title>
+    <script>
+        // Redirect mobile users to mobile pitch deck
+        if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth <= 768) {
+            window.location.replace('/mobile-pitch.html');
+        }
+    </script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background: #fff;
+            color: #1B365D;
+            overflow: hidden;
+        }
+
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .ui-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .top-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 16px 40px;
+            border-bottom: 3px solid #C1403D;
+            backdrop-filter: blur(10px);
+            pointer-events: all;
+            z-index: 101;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .brand img {
+            height: 32px;
+            width: auto;
+        }
+
+        .brand-text {
+            font-size: 11px;
+            font-weight: 700;
+            color: #1B365D;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .content-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 1100px;
+            width: 92%;
+            max-height: 88vh;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            text-align: center;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+            z-index: 200;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
+            padding: 10px 15px 30px 15px;
+        }
+
+        .content-overlay > * {
+            pointer-events: auto;
+        }
+
+        /* Ensure content is scrollable on desktop */
+        @media (min-width: 769px) {
+            .content-overlay {
+                scrollbar-width: thin;
+                scrollbar-color: rgba(193, 64, 61, 0.5) transparent;
+            }
+        }
+
+        /* Always show scrollbar on desktop */
+        .content-overlay::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .content-overlay::-webkit-scrollbar-track {
+            background: rgba(27, 54, 93, 0.1);
+            border-radius: 3px;
+        }
+
+        .content-overlay::-webkit-scrollbar-thumb {
+            background: rgba(193, 64, 61, 0.6);
+            border-radius: 3px;
+        }
+
+        .content-overlay::-webkit-scrollbar-thumb:hover {
+            background: rgba(193, 64, 61, 0.8);
+        }
+
+        .content-overlay h1 {
+            font-size: 38px;
+            font-weight: 300;
+            margin-bottom: 12px;
+            margin-top: 20px;
+            color: #1B365D;
+            text-shadow: 0 2px 10px rgba(255,255,255,0.8);
+        }
+
+        .content-overlay .subhead {
+            font-size: 22px;
+            line-height: 1.6;
+            color: #1B365D;
+            opacity: 0.9;
+            text-shadow: 0 2px 10px rgba(255,255,255,0.8);
+        }
+
+        .service-cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 24px;
+        }
+
+        .service-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid rgba(193, 64, 61, 0.5);
+            backdrop-filter: blur(10px);
+            text-align: left;
+        }
+
+        .service-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #C1403D;
+            margin-bottom: 12px;
+        }
+
+        .service-card .price {
+            font-size: 28px;
+            font-weight: 300;
+            color: #1B365D;
+            margin-bottom: 8px;
+        }
+
+        .service-card .duration {
+            font-size: 13px;
+            color: #1B365D;
+            opacity: 0.7;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .service-card p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #1B365D;
+            opacity: 0.85;
+            margin-bottom: 16px;
+        }
+
+        .service-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .service-card ul li {
+            font-size: 13px;
+            line-height: 1.8;
+            color: #1B365D;
+            opacity: 0.8;
+            padding-left: 20px;
+            position: relative;
+            margin-bottom: 8px;
+        }
+
+        .service-card ul li:before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: #C1403D;
+        }
+
+        .qualifier-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 24px;
+        }
+
+        .qualifier-card {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid rgba(193, 64, 61, 0.5);
+            backdrop-filter: blur(10px);
+            text-align: left;
+        }
+
+        .qualifier-card h4 {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #C1403D;
+            margin-bottom: 16px;
+        }
+
+        .qualifier-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .qualifier-card ul li {
+            font-size: 13px;
+            line-height: 1.7;
+            color: #1B365D;
+            opacity: 0.85;
+            padding-left: 20px;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        .qualifier-card ul li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #C1403D;
+        }
+
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .process-step {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 32px;
+            border-radius: 12px;
+            border-left: 4px solid #C1403D;
+            backdrop-filter: blur(10px);
+            text-align: left;
+        }
+
+        .process-step .number {
+            font-size: 36px;
+            font-weight: 300;
+            color: #C1403D;
+            margin-bottom: 12px;
+        }
+
+        .process-step h4 {
+            font-size: 16px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #1B365D;
+            margin-bottom: 8px;
+        }
+
+        .process-step p {
+            font-size: 14px;
+            line-height: 1.6;
+            color: #1B365D;
+            opacity: 0.85;
+        }
+
+        .contact-form {
+            max-width: 500px;
+            margin: 20px auto 0;
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 12px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #C1403D;
+            margin-bottom: 8px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 8px 10px;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 13px;
+            border: 2px solid rgba(193, 64, 61, 0.5);
+            background: rgba(255, 255, 255, 0.95);
+            color: #1B365D;
+            border-radius: 6px;
+            pointer-events: all;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 60px;
+            max-height: 80px;
+        }
+
+        .submit-button {
+            background: #C1403D;
+            color: #fff;
+            padding: 12px 32px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            pointer-events: all;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+            background: #A03532;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(193, 64, 61, 0.4);
+        }
+
+        .navigation {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            pointer-events: all;
+            z-index: 102;
+        }
+
+        .nav-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(193, 64, 61, 0.5);
+            margin: 16px 0;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid #1B365D;
+            position: relative;
+        }
+
+        .nav-dot:hover {
+            background: rgba(193, 64, 61, 0.8);
+            transform: scale(1.2);
+            border-color: #C1403D;
+        }
+
+        .nav-dot.active {
+            background: #C1403D;
+            border-color: #1B365D;
+            box-shadow: 0 0 20px rgba(193, 64, 61, 0.8);
+        }
+
+        .nav-label {
+            position: absolute;
+            right: 25px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(27, 54, 93, 0.95);
+            color: #fff;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            border: 1px solid #C1403D;
+        }
+
+        .nav-dot:hover .nav-label {
+            opacity: 1;
+        }
+
+        .controls-hint {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(27, 54, 93, 0.9);
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #fff;
+            pointer-events: none;
+            backdrop-filter: blur(10px);
+            animation: fadeInOut 4s ease-in-out infinite;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 1; }
+        }
+
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 1000;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(193, 64, 61, 0.2);
+            border-top: 4px solid #C1403D;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            body {
+                overflow-x: hidden;
+            }
+
+            .top-bar {
+                padding: 12px 20px;
+            }
+
+            .brand img {
+                height: 24px;
+            }
+
+            .brand-text {
+                font-size: 9px;
+            }
+
+            .content-overlay {
+                width: 95%;
+                max-height: 75vh;
+                padding: 0 10px;
+                overflow-y: scroll;
+            }
+
+            .content-overlay h1 {
+                font-size: 28px;
+                margin-bottom: 16px;
+                margin-top: 20px;
+            }
+
+            .content-overlay .subhead {
+                font-size: 16px;
+            }
+
+            .service-cards,
+            .qualifier-section,
+            .process-steps {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .service-card,
+            .qualifier-card,
+            .process-step {
+                padding: 20px;
+            }
+
+            .service-card h3,
+            .qualifier-card h4,
+            .process-step h4 {
+                font-size: 14px;
+            }
+
+            .service-card p,
+            .qualifier-card ul li,
+            .process-step p {
+                font-size: 13px;
+            }
+
+            .navigation {
+                right: 10px;
+            }
+
+            .nav-dot {
+                width: 16px;
+                height: 16px;
+                margin: 16px 0;
+                border-width: 3px;
+            }
+
+            .nav-label {
+                display: none;
+            }
+
+            .controls-hint {
+                font-size: 10px;
+                padding: 8px 16px;
+                bottom: 10px;
+            }
+
+            .contact-form {
+                max-width: 100%;
+            }
+
+            .form-group input,
+            .form-group textarea,
+            .form-group select {
+                font-size: 16px; /* Prevents zoom on iOS */
+            }
+
+            .submit-button {
+                width: 100%;
+                padding: 16px;
+            }
+        }
+
+        /* Tablet Styles */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .content-overlay {
+                max-width: 700px;
+            }
+
+            .service-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .qualifier-section {
+                grid-template-columns: 1fr;
+            }
+
+            .process-steps {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="loading" class="loading">
+        <div class="loading-spinner"></div>
+        <div style="color: #C1403D; font-size: 18px;">Initializing 3D Experience...</div>
+    </div>
+
+    <div id="canvas-container"></div>
+
+    <div class="ui-overlay">
+        <div class="top-bar">
+            <div class="brand">
+                <img src="https://lightslategrey-chamois-591019.hostingersite.com/wp-content/uploads/2026/01/ll.jpg" alt="BackOffice Systems">
+                <span class="brand-text">BackOffice Systems</span>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <div class="nav-dot active" data-section="0">
+                <div class="nav-label">Hero</div>
+            </div>
+            <div class="nav-dot" data-section="1">
+                <div class="nav-label">Services</div>
+            </div>
+            <div class="nav-dot" data-section="2">
+                <div class="nav-label">Who This Is For</div>
+            </div>
+            <div class="nav-dot" data-section="3">
+                <div class="nav-label">Process</div>
+            </div>
+            <div class="nav-dot" data-section="4">
+                <div class="nav-label">Contact</div>
+            </div>
+        </div>
+
+        <!-- Section 0: Hero -->
+        <div class="content-overlay" id="section-0" style="opacity: 1;">
+            <h1 style="color: #1B365D; text-shadow: 0 2px 10px rgba(255,255,255,0.9), 0 0 40px rgba(255,255,255,0.5);">Smart Systems Implementation</h1>
+            <p class="subhead" style="color: #1B365D; text-shadow: 0 2px 10px rgba(255,255,255,0.9), 0 0 30px rgba(255,255,255,0.5);">We build your systems, automate them, then add intelligence and visibility so they improve over time.</p>
+        </div>
+
+        <!-- Section 1: Services -->
+        <div class="content-overlay" id="section-1" style="opacity: 0;">
+            <h1 style="font-size: 42px; margin-bottom: 16px;">How It Works</h1>
+            <div class="service-cards">
+                <div class="service-card">
+                    <h3>Build the System</h3>
+                    <div class="price">Phase 1</div>
+                    <div class="duration">Foundation</div>
+                    <p>We design and implement your core operational systems with proper integration and data structure. Already using Monday, Airtable, or other tools? We work with what you have and enhance it.</p>
+                    <ul>
+                        <li>Workflow analysis and system design</li>
+                        <li>Integration across existing tools</li>
+                        <li>Structured data capture</li>
+                        <li>Process documentation</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <h3>Automate the System</h3>
+                    <div class="price">Phase 2</div>
+                    <div class="duration">Implementation</div>
+                    <p>Once core systems are in place, we configure them to support ongoing visibility and adaptive improvement.</p>
+                    <ul>
+                        <li>Event tracking across workflows</li>
+                        <li>Automation logic that responds to usage</li>
+                        <li>Manager-facing dashboards for oversight</li>
+                        <li>Real-time process monitoring</li>
+                    </ul>
+                </div>
+                <div class="service-card">
+                    <h3>Smart Systems Subscription</h3>
+                    <div class="price">Monthly</div>
+                    <div class="duration">Living Infrastructure</div>
+                    <p>Automated oversight, adaptive recommendations, and continuous system refinement. Your team monitors and adjusts systems instead of doing manual work.</p>
+                    <ul>
+                        <li>Automated agent monitoring workflows</li>
+                        <li>Visual interface for real-time observation</li>
+                        <li>Pattern detection and operational insights</li>
+                        <li>Team training on system oversight</li>
+                        <li>Suggested optimizations based on behavior</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 2: Who This Is For -->
+        <div class="content-overlay" id="section-2" style="opacity: 0;">
+            <h1 style="font-size: 42px; margin-bottom: 16px;">Who This Is For</h1>
+            <div class="qualifier-section">
+                <div class="qualifier-card">
+                    <h4>Good Fit</h4>
+                    <ul>
+                        <li>Established teams (5+ people) with recurring workflows</li>
+                        <li>Operations involving handoffs, approvals, or dependencies</li>
+                        <li>Multiple systems that need to work together</li>
+                        <li>Already using tools like Monday, Airtable, or similar (we enhance what you have)</li>
+                        <li>Leaders who want visibility without manual reporting</li>
+                        <li>Organizations open to automation + intelligent oversight</li>
+                    </ul>
+                </div>
+                <div class="qualifier-card">
+                    <h4>Better Fit for One-Time Engagement</h4>
+                    <ul>
+                        <li>Teams seeking a specific system or automation build</li>
+                        <li>Clear requirements and defined workflows</li>
+                        <li>Internal teams that will manage systems after handoff</li>
+                        <li>Prefer project-based over subscription model</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="qualifier-card" style="margin-top: 30px; max-width: 700px; margin-left: auto; margin-right: auto;">
+                <h4>Not a Fit</h4>
+                <ul>
+                    <li>Looking for generic tools or templates</li>
+                    <li>Expecting automation without process ownership</li>
+                    <li>No capacity to act on insights or recommendations</li>
+                    <li>Primarily cost-driven, not outcome-driven</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Section 3: Process -->
+        <div class="content-overlay" id="section-3" style="opacity: 0;">
+            <h1 style="font-size: 42px; margin-bottom: 16px;">Your Journey to Smart Systems</h1>
+            <div class="process-steps">
+                <div class="process-step">
+                    <div class="number">01</div>
+                    <h4>Discovery & Design</h4>
+                    <p>We map your workflows and design your automated agents + visual dashboard</p>
+                </div>
+                <div class="process-step">
+                    <div class="number">02</div>
+                    <h4>Build & Deploy</h4>
+                    <p>We integrate systems, build agents, and launch your interactive management dashboard</p>
+                </div>
+                <div class="process-step">
+                    <div class="number">03</div>
+                    <h4>Ongoing Optimization</h4>
+                    <p>Your subscription includes 24/7 automation + AI-powered improvement suggestions</p>
+                </div>
+            </div>
+            <div class="qualifier-card" style="margin-top: 30px; max-width: 700px; margin-left: auto; margin-right: auto;">
+                <h4>Subscription Model — What's Included</h4>
+                <ul>
+                    <li>Automated agent monitoring workflows and system events</li>
+                    <li>Visual interface for managers to observe processes in real time</li>
+                    <li>Pattern detection and operational insights</li>
+                    <li>Suggested optimizations based on actual system behavior</li>
+                    <li>Ongoing system tuning and automation adjustments</li>
+                </ul>
+                <p style="margin-top: 16px; font-size: 13px; color: #666; font-style: italic;">Designed for operations managers overseeing complex processes. Asynchronous support with optional quarterly reviews. Pricing based on system complexity and data volume.</p>
+            </div>
+            
+            <div class="qualifier-card" style="margin-top: 30px; max-width: 700px; margin-left: auto; margin-right: auto; background: rgba(193, 64, 61, 0.05); border-left-color: #C1403D;">
+                <h4 style="color: #C1403D;">What Happens to Your Team?</h4>
+                <p style="font-size: 14px; line-height: 1.7; color: #1B365D; margin-bottom: 12px;">
+                    We don't replace people — we upgrade them. When automation handles routine tasks, your employees are trained to monitor and optimize the systems. They work fewer hours at a higher rate, making them more valuable while reducing your costs.
+                </p>
+                <p style="font-size: 13px; color: #666; margin-top: 8px;">
+                    <strong>Example:</strong> A 40-hour/week employee at $25/hour ($1,000/week) becomes a 20-hour/week system manager at $35/hour ($700/week). Same person, higher skills, 30% cost savings.
+                </p>
+            </div>
+        </div>
+
+        <!-- Section 4: Contact -->
+        <div class="content-overlay" id="section-4" style="opacity: 0;">
+            <h1 style="font-size: 42px; margin-bottom: 16px;">Let's Talk</h1>
+            <p class="subhead" style="margin-bottom: 24px;">Tell us about your operations challenge</p>
+            <form class="contact-form" id="contactForm">
+                <div class="form-group">
+                    <label for="company">Company Name</label>
+                    <input type="text" id="company" name="company" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">What are you looking to improve?</label>
+                    <textarea id="message" name="message" placeholder="Tell us about your team size, current systems, and biggest operational challenges..." required></textarea>
+                </div>
+                <button type="submit" class="submit-button">Send Message</button>
+            </form>
+            <p style="margin-top: 20px; font-size: 14px; color: rgba(27, 54, 93, 0.7);">
+                Or email: <a href="mailto:info@manageonsite.com" style="color: #C1403D; text-decoration: none; border-bottom: 1px solid #C1403D;">info@manageonsite.com</a>
+            </p>
+        </div>
+
+        <div class="controls-hint">
+            🖱️ Scroll to navigate • Click & drag to explore
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script>
+        let scene, camera, renderer, controls;
+        let currentSection = 0;
+        let isTransitioning = false;
+        let particles = [];
+        let neuralNetwork = [];
+        let scrollTimeout = null;
+        let pathway = [];
+        let rewardIcons = [];
+        let progressParticles = [];
+
+        function init() {
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0xffffff);
+            scene.fog = new THREE.Fog(0xffffff, 20, 100);
+
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.set(0, 0, 30);
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.enableZoom = false;
+            controls.enablePan = false;
+            controls.autoRotate = false;
+            controls.autoRotateSpeed = 0;
+
+            createEnvironment();
+            createPathway();
+            createRewardIcons();
+            createLights();
+
+            window.addEventListener('resize', onWindowResize);
+            
+            // Only enable wheel scroll on desktop
+            const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth <= 768;
+            if (!isMobile) {
+                window.addEventListener('wheel', onScroll, { passive: false });
+            }
+            
+            // Disable OrbitControls on mobile to prevent interference
+            if (isMobile) {
+                controls.enabled = false;
+            }
+            
+            document.querySelectorAll('.nav-dot').forEach(dot => {
+                dot.addEventListener('click', (e) => {
+                    const section = parseInt(e.currentTarget.dataset.section);
+                    navigateToSection(section);
+                });
+            });
+
+            // Form submission
+            document.getElementById('contactForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const submitButton = e.target.querySelector('.submit-button');
+                const originalText = submitButton.textContent;
+                submitButton.textContent = 'Sending...';
+                submitButton.disabled = true;
+                
+                const formData = {
+                    company: document.getElementById('company').value,
+                    email: document.getElementById('email').value,
+                    message: document.getElementById('message').value
+                };
+                
+                try {
+                    const response = await fetch('/send-email.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData)
+                    });
+                    
+                    if (response.ok) {
+                        submitButton.textContent = 'Sent Successfully!';
+                        submitButton.style.background = '#2d7a3e';
+                        e.target.reset();
+                        
+                        setTimeout(() => {
+                            submitButton.textContent = originalText;
+                            submitButton.style.background = '';
+                            submitButton.disabled = false;
+                        }, 3000);
+                    } else {
+                        throw new Error('Failed to send');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    submitButton.textContent = 'Error - Try Email Instead';
+                    submitButton.style.background = '#C1403D';
+                    
+                    setTimeout(() => {
+                        submitButton.textContent = originalText;
+                        submitButton.style.background = '';
+                        submitButton.disabled = false;
+                    }, 3000);
+                }
+            });
+
+            document.getElementById('loading').style.display = 'none';
+            animate();
+        }
+
+        function createEnvironment() {
+            // Create flowing particle system
+            const particleCount = 300;
+            const geometry = new THREE.BufferGeometry();
+            const positions = new Float32Array(particleCount * 3);
+            const colors = new Float32Array(particleCount * 3);
+            const velocities = [];
+
+            for (let i = 0; i < particleCount; i++) {
+                const i3 = i * 3;
+                positions[i3] = (Math.random() - 0.5) * 100;
+                positions[i3 + 1] = (Math.random() - 0.5) * 100;
+                positions[i3 + 2] = (Math.random() - 0.5) * 100;
+
+                const color = new THREE.Color(0xC1403D);
+                colors[i3] = color.r;
+                colors[i3 + 1] = color.g;
+                colors[i3 + 2] = color.b;
+
+                velocities.push({
+                    x: (Math.random() - 0.5) * 0.02,
+                    y: (Math.random() - 0.5) * 0.02,
+                    z: (Math.random() - 0.5) * 0.02
+                });
+            }
+
+            geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            const material = new THREE.PointsMaterial({
+                size: 0.15,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.7,
+                blending: THREE.AdditiveBlending
+            });
+
+            const particleSystem = new THREE.Points(geometry, material);
+            scene.add(particleSystem);
+
+            particleSystem.userData.velocities = velocities;
+            particles.push(particleSystem);
+
+            // Create neural network connections
+            for (let i = 0; i < 50; i++) {
+                const points = [];
+                for (let j = 0; j < 3; j++) {
+                    points.push(new THREE.Vector3(
+                        (Math.random() - 0.5) * 60,
+                        (Math.random() - 0.5) * 60,
+                        (Math.random() - 0.5) * 60
+                    ));
+                }
+
+                const curve = new THREE.CatmullRomCurve3(points);
+                const tubeGeometry = new THREE.TubeGeometry(curve, 20, 0.05, 8, false);
+                const tubeMaterial = new THREE.MeshBasicMaterial({
+                    color: 0x1B365D,
+                    transparent: true,
+                    opacity: 0.3
+                });
+                const tube = new THREE.Mesh(tubeGeometry, tubeMaterial);
+                scene.add(tube);
+                neuralNetwork.push(tube);
+            }
+
+            // Create floating geometric shapes
+            for (let i = 0; i < 20; i++) {
+                const geometry = Math.random() > 0.5 
+                    ? new THREE.IcosahedronGeometry(0.5, 0)
+                    : new THREE.OctahedronGeometry(0.5, 0);
+                
+                const material = new THREE.MeshPhongMaterial({
+                    color: 0xC1403D,
+                    transparent: true,
+                    opacity: 0.4,
+                    wireframe: true
+                });
+
+                const mesh = new THREE.Mesh(geometry, material);
+                mesh.position.set(
+                    (Math.random() - 0.5) * 80,
+                    (Math.random() - 0.5) * 80,
+                    (Math.random() - 0.5) * 80
+                );
+                mesh.userData.rotationSpeed = {
+                    x: (Math.random() - 0.5) * 0.02,
+                    y: (Math.random() - 0.5) * 0.02,
+                    z: (Math.random() - 0.5) * 0.02
+                };
+                scene.add(mesh);
+                particles.push(mesh);
+            }
+        }
+
+        function createPathway() {
+            // Create glowing pathway tunnel that extends through sections
+            const pathwaySegments = 5;
+            
+            for (let i = 0; i < pathwaySegments; i++) {
+                // Create ring segments for the pathway
+                const ringGeometry = new THREE.TorusGeometry(8, 0.3, 16, 100);
+                const ringMaterial = new THREE.MeshBasicMaterial({
+                    color: 0xC1403D,
+                    transparent: true,
+                    opacity: 0,
+                    emissive: 0xC1403D,
+                    emissiveIntensity: 0
+                });
+                const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+                ring.position.z = -15 * i;
+                ring.rotation.x = Math.PI / 2;
+                ring.userData.targetOpacity = 0.4;
+                ring.userData.section = i;
+                scene.add(ring);
+                pathway.push(ring);
+
+                // Add connecting lines between rings
+                if (i > 0) {
+                    const lineGeometry = new THREE.BufferGeometry();
+                    const linePositions = [];
+                    const segments = 8;
+                    
+                    for (let j = 0; j <= segments; j++) {
+                        const angle = (j / segments) * Math.PI * 2;
+                        const x = Math.cos(angle) * 8;
+                        const y = Math.sin(angle) * 8;
+                        const z1 = -15 * (i - 1);
+                        const z2 = -15 * i;
+                        
+                        linePositions.push(x, y, z1);
+                        linePositions.push(x, y, z2);
+                    }
+                    
+                    lineGeometry.setAttribute('position', new THREE.Float32BufferAttribute(linePositions, 3));
+                    const lineMaterial = new THREE.LineBasicMaterial({
+                        color: 0xC1403D,
+                        transparent: true,
+                        opacity: 0
+                    });
+                    const lines = new THREE.LineSegments(lineGeometry, lineMaterial);
+                    lines.userData.targetOpacity = 0.2;
+                    lines.userData.section = i;
+                    scene.add(lines);
+                    pathway.push(lines);
+                }
+            }
+        }
+
+        function createRewardIcons() {
+            // Create reward symbols at each section
+            const rewards = [
+                { icon: '⏱️', label: 'Time Saved', z: -10, color: 0x1B365D },
+                { icon: '💰', label: 'Cost Reduced', z: -20, color: 0xFFD700 },
+                { icon: '⚡', label: 'Efficiency', z: -30, color: 0xC1403D },
+                { icon: '✨', label: 'Automation', z: -40, color: 0x1B365D }
+            ];
+
+            rewards.forEach((reward, index) => {
+                // Create glowing sphere for reward
+                const geometry = new THREE.SphereGeometry(2, 32, 32);
+                const material = new THREE.MeshBasicMaterial({
+                    color: reward.color,
+                    transparent: true,
+                    opacity: 0,
+                    emissive: reward.color,
+                    emissiveIntensity: 0
+                });
+                const sphere = new THREE.Mesh(geometry, material);
+                sphere.position.set(10, 3, reward.z); // Offset to upper right
+                sphere.userData.targetOpacity = 0.6;
+                sphere.userData.targetEmissive = 0.7;
+                sphere.userData.section = index + 1;
+                sphere.userData.baseY = 0;
+                scene.add(sphere);
+                rewardIcons.push(sphere);
+
+                // Add particle ring around reward
+                const particleCount = 30;
+                const particleGeometry = new THREE.BufferGeometry();
+                const particlePositions = new Float32Array(particleCount * 3);
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const angle = (i / particleCount) * Math.PI * 2;
+                    particlePositions[i * 3] = 10 + Math.cos(angle) * 3; // Match sphere offset
+                    particlePositions[i * 3 + 1] = 3 + Math.sin(angle) * 3;
+                    particlePositions[i * 3 + 2] = reward.z;
+                }
+                
+                particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+                const particleMaterial = new THREE.PointsMaterial({
+                    color: reward.color,
+                    size: 0.2,
+                    transparent: true,
+                    opacity: 0
+                });
+                const particleRing = new THREE.Points(particleGeometry, particleMaterial);
+                particleRing.userData.targetOpacity = 0.8;
+                particleRing.userData.section = index + 1;
+                particleRing.userData.rotationSpeed = 0.01;
+                scene.add(particleRing);
+                rewardIcons.push(particleRing);
+            });
+        }
+
+        function createLights() {
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+            scene.add(ambientLight);
+
+            const directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.6);
+            directionalLight1.position.set(10, 10, 10);
+            scene.add(directionalLight1);
+
+            const directionalLight2 = new THREE.DirectionalLight(0xC1403D, 0.4);
+            directionalLight2.position.set(-10, -10, 10);
+            scene.add(directionalLight2);
+
+            const pointLight1 = new THREE.PointLight(0xC1403D, 1, 100);
+            pointLight1.position.set(20, 0, 20);
+            scene.add(pointLight1);
+
+            const pointLight2 = new THREE.PointLight(0x1B365D, 0.8, 100);
+            pointLight2.position.set(-20, 0, -20);
+            scene.add(pointLight2);
+        }
+
+        function navigateToSection(index) {
+            if (isTransitioning || index === currentSection) return;
+            
+            isTransitioning = true;
+            
+            // Hide current section
+            document.getElementById(`section-${currentSection}`).style.opacity = '0';
+            
+            // Show new section
+            setTimeout(() => {
+                document.getElementById(`section-${index}`).style.opacity = '1';
+                currentSection = index;
+                isTransitioning = false;
+            }, 500);
+
+            // Update navigation
+            document.querySelectorAll('.nav-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+
+            // Activate pathway and rewards up to current section
+            activatePathwayToSection(index);
+
+            // Animate camera - keep it at same Z, just subtle movement
+            const targetZ = 30;
+            animateCamera(targetZ);
+        }
+
+        function activatePathwayToSection(targetSection) {
+            // Fade in pathway rings and lines up to current section
+            pathway.forEach(element => {
+                if (element.userData.section <= targetSection) {
+                    element.material.opacity = element.userData.targetOpacity;
+                    if (element.material.emissiveIntensity !== undefined) {
+                        element.material.emissiveIntensity = 0.5;
+                    }
+                }
+            });
+
+            // Activate reward icons up to current section
+            rewardIcons.forEach(element => {
+                if (element.userData.section <= targetSection) {
+                    element.material.opacity = element.userData.targetOpacity;
+                    if (element.material.emissiveIntensity !== undefined) {
+                        element.material.emissiveIntensity = element.userData.targetEmissive;
+                    }
+                }
+            });
+        }
+
+        function animateCamera(targetZ) {
+            const startZ = camera.position.z;
+            const duration = 1000;
+            const startTime = Date.now();
+
+            function animate() {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                const eased = easeInOutCubic(progress);
+
+                camera.position.z = startZ + (targetZ - startZ) * eased;
+
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                }
+            }
+
+            animate();
+        }
+
+        function easeInOutCubic(t) {
+            return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+        }
+
+        function onScroll(event) {
+            event.preventDefault();
+            
+            if (isTransitioning || scrollTimeout) return;
+
+            // Debounce scroll events
+            scrollTimeout = setTimeout(() => {
+                scrollTimeout = null;
+            }, 800);
+
+            if (event.deltaY > 0 && currentSection < 4) {
+                navigateToSection(currentSection + 1);
+            } else if (event.deltaY < 0 && currentSection > 0) {
+                navigateToSection(currentSection - 1);
+            }
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Animate particles (slower speed)
+            particles.forEach(particle => {
+                if (particle.userData.velocities) {
+                    const positions = particle.geometry.attributes.position.array;
+                    const velocities = particle.userData.velocities;
+
+                    for (let i = 0; i < positions.length; i += 3) {
+                        // Reduced speed by 50%
+                        positions[i] += velocities[i / 3].x * 0.5;
+                        positions[i + 1] += velocities[i / 3].y * 0.5;
+                        positions[i + 2] += velocities[i / 3].z * 0.5;
+
+                        // Boundary check
+                        if (Math.abs(positions[i]) > 50) velocities[i / 3].x *= -1;
+                        if (Math.abs(positions[i + 1]) > 50) velocities[i / 3].y *= -1;
+                        if (Math.abs(positions[i + 2]) > 50) velocities[i / 3].z *= -1;
+                    }
+
+                    particle.geometry.attributes.position.needsUpdate = true;
+                } else if (particle.userData.rotationSpeed) {
+                    // Reduced rotation speed by 70%
+                    particle.rotation.x += particle.userData.rotationSpeed.x * 0.3;
+                    particle.rotation.y += particle.userData.rotationSpeed.y * 0.3;
+                    particle.rotation.z += particle.userData.rotationSpeed.z * 0.3;
+                }
+            });
+
+            // Animate neural network (slower)
+            neuralNetwork.forEach((tube, index) => {
+                tube.rotation.y += 0.0003; // Reduced from 0.001
+                tube.material.opacity = 0.2 + Math.sin(Date.now() * 0.0005 + index) * 0.1; // Slower pulse
+            });
+
+            // Animate pathway rings (gentle pulse)
+            pathway.forEach((element, index) => {
+                if (element.material.opacity > 0) {
+                    const pulse = Math.sin(Date.now() * 0.001 + index) * 0.1;
+                    if (element.material.emissiveIntensity !== undefined) {
+                        element.material.emissiveIntensity = 0.5 + pulse;
+                    }
+                }
+            });
+
+            // Animate reward icons (float and glow)
+            rewardIcons.forEach((element, index) => {
+                if (element.material.opacity > 0) {
+                    // Floating motion
+                    if (element.userData.baseY !== undefined) {
+                        element.position.y = element.userData.baseY + Math.sin(Date.now() * 0.001 + index) * 0.5;
+                    }
+                    
+                    // Pulsing glow
+                    const pulse = Math.sin(Date.now() * 0.002 + index) * 0.2;
+                    if (element.material.emissiveIntensity !== undefined) {
+                        element.material.emissiveIntensity = element.userData.targetEmissive + pulse;
+                    }
+                    
+                    // Rotate particle rings
+                    if (element.userData.rotationSpeed) {
+                        element.rotation.z += element.userData.rotationSpeed;
+                    }
+                }
+            });
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        init();
+    </script>
+</body>
+</html>

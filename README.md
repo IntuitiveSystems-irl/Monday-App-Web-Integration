@@ -1,149 +1,240 @@
-# Monday.com Board Scraper
+# Monday.com App Web Integration
 
-Automated scraper to collect data from Monday.com boards filtered by date and export to Excel templates.
+A comprehensive system that combines Monday.com board scraping with web-based scheduling and operations management. This project includes both a Python-based data scraper and a modern web interface for Monday.com workflow automation.
 
-## Setup
+## 🎯 Overview
 
-### 1. Install Dependencies
-```bash
-pip install -r requirements.txt
-```
+This project provides two main components:
 
-### 2. Configure Environment Variables
-Copy `.env.example` to `.env` and fill in your credentials:
-```bash
-cp .env.example .env
-```
+1. **Monday.com Board Scraper** - Automated Python scraper to collect data from Monday.com boards filtered by date and export to Excel templates
+2. **OFFICEOPS Web Interface** - Scheduling system with web interface, 3D visualizations, and WordPress integration
 
-Edit `.env`:
-```
-MONDAY_API_TOKEN=your_monday_api_token
-MONDAY_BOARD_ID=your_board_id
-```
+## ✨ Features
 
-#### Getting Your Monday.com API Token:
-1. Go to Monday.com
-2. Click your avatar (bottom left)
-3. Go to Admin → API
-4. Generate a new API token
-5. Copy and paste it into `.env`
+### Board Scraper Features
+- **Automated Data Collection**: Fetch items from Monday.com boards with date filtering
+- **Excel Export**: Export data to customizable Excel templates
+- **Column Mapping**: Flexible mapping between Monday.com columns and Excel cells
+- **Automation Ready**: Can be scheduled for daily execution via cron or Task Scheduler
 
-#### Getting Your Board ID:
-1. Open the board in Monday.com
-2. Look at the URL: `https://yourcompany.monday.com/boards/1234567890`
-3. The number `1234567890` is your Board ID
+### Web Interface Features
+- **Multiple Views**: Main dashboard, 3D visualizations, mobile interface
+- **Contact Forms**: Request scheduling assistance or system access
+- **Email Notifications**: Automated notifications via Resend API
+- **WordPress Integration**: Embed scheduling system in WordPress sites
+- **Production Ready**: Deployment scripts for live environments
 
-### 3. Create Excel Template
-Create a file named `template.xlsx` in this directory with your desired layout.
+## 🛠 Tech Stack
 
-### 4. Configure Column Mappings
-Edit `config.py` to map Monday.com columns to Excel cells:
+- **Backend**: Python 3.x, PHP, Node.js (Serverless Functions)
+- **Frontend**: HTML5, CSS3, JavaScript (ES6+)
+- **Visualization**: WebGL / Three.js
+- **API Integration**: Monday.com API
+- **Data Management**: Microsoft Excel, openpyxl
+- **Email Service**: Resend API
+- **Deployment**: Vercel, Custom Server (PM2)
 
-```python
-COLUMN_MAPPINGS = {
-    'name': 'A2',           # Item name goes to cell A2
-    'status': 'B2',         # Status column goes to B2
-    'date': 'C2',           # Date column goes to C2
-}
-```
+## 📋 Prerequisites
 
-For multiple rows, the script will automatically increment row numbers (A2, A3, A4, etc.)
+- Python 3.x
+- Node.js 18.x or higher (for web interface)
+- Monday.com account with API access
+- Microsoft Excel (for template creation)
+- Resend API account (for email notifications)
 
-You can also map by column ID from Monday.com. To find column IDs, run the scraper once and check the output.
+## 🚀 Quick Start
 
-### 5. Configure Date Filtering
-Edit `config.py` to set which column to filter by:
-```python
-DATE_COLUMN_NAME = "Date"  # Change to your date column name
-```
+### Python Scraper Setup
 
-## Usage
+1. **Install Python Dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-### Run the Scraper
+2. **Configure Environment Variables**
+   ```bash
+   cp .env.example .env
+   ```
+   
+   Edit `.env`:
+   ```
+   MONDAY_API_TOKEN=your_monday_api_token
+   MONDAY_BOARD_ID=your_board_id
+   ```
+
+3. **Get Your Monday.com Credentials**
+   - **API Token**: Monday.com → Avatar → Admin → API → Generate token
+   - **Board ID**: From board URL: `https://yourcompany.monday.com/boards/1234567890`
+
+4. **Create Excel Template**
+   Create `template.xlsx` with your desired layout
+
+5. **Configure Column Mappings**
+   Edit `config.py`:
+   ```python
+   COLUMN_MAPPINGS = {
+       'name': 'A2',
+       'status': 'B2',
+       'date': 'C2',
+   }
+   DATE_COLUMN_NAME = "Date"
+   ```
+
+6. **Run the Scraper**
+   ```bash
+   python scraper.py
+   ```
+
+### Web Interface Setup
+
+1. **Install Node Dependencies**
+   ```bash
+   npm install
+   ```
+
+2. **Configure Environment**
+   Add to `.env`:
+   ```
+   RESEND_API_KEY=your_resend_api_key_here
+   ```
+
+3. **Run Development Server**
+   ```bash
+   npm run dev
+   ```
+
+4. **Access the Interface**
+   - Main page: `http://localhost:3000`
+   - 3D version: `http://localhost:3000/index-3d-v2.html`
+   - Mobile view: `http://localhost:3000/mobile.html`
+
+## 📅 Usage
+
+### Python Scraper Usage
+
+**Basic Usage:**
 ```bash
 python scraper.py
 ```
 
-This will:
-1. Fetch all items from your Monday.com board
-2. Filter items where the date column matches today's date
-3. Export matching items to Excel using your template
-4. Save the file in the `output/` folder
-
-### Custom Date
-To filter by a specific date, modify `scraper.py`:
+**Custom Date Filtering:**
 ```python
 from datetime import datetime
-
-target_date = datetime(2024, 12, 25)  # Christmas 2024
+target_date = datetime(2024, 12, 25)
 scraper.scrape_and_export(target_date=target_date)
 ```
 
-### Single Row vs Multiple Rows
-By default, the scraper exports multiple items to multiple rows.
-
-To export only to specific cells (single item):
-```python
-scraper.scrape_and_export(multiple_rows=False)
-```
-
-## Automation
-
-### Daily Execution (Mac/Linux)
-Add to crontab:
+**Automation (Mac/Linux):**
 ```bash
 crontab -e
+# Add: 0 9 * * * cd /Users/lindsay/DD && /usr/bin/python3 scraper.py
 ```
 
-Add this line to run daily at 9 AM:
+### Testing & Inspection
+
+- **Test API Connection**: `python test_api_connection.py`
+- **Inspect Board Structure**: `python inspect_board.py`
+- **Test Scraper**: `python test_scraper.py`
+
+## 📁 Project Structure
+
 ```
-0 9 * * * cd /Users/lindsay/DD && /usr/bin/python3 scraper.py
+Monday-App-Web-Integration/
+├── Python Scraper Components
+│   ├── scraper.py              # Main scraper script
+│   ├── monday_client.py        # Monday.com API client
+│   ├── excel_handler.py        # Excel template handler
+│   ├── config.py               # Configuration
+│   ├── test_api_connection.py  # API testing
+│   ├── inspect_board.py        # Board inspection tool
+│   ├── test_scraper.py         # Scraper testing
+│   ├── template.xlsx           # Excel template
+│   └── output/                 # Generated Excel files
+│
+├── Web Interface Components
+│   ├── index.html              # Main landing page
+│   ├── index-3d.html           # 3D interactive version
+│   ├── index-3d-v2.html        # Enhanced 3D experience
+│   ├── mobile.html             # Mobile-optimized view
+│   ├── mobile-pitch.html       # Mobile pitch presentation
+│   ├── api/contact.js          # Contact form handler
+│   ├── templates/index.html    # Web templates
+│   └── web_config.py           # Web configuration
+│
+├── WordPress Integration
+│   ├── page-smart-systems.php
+│   ├── page-smart-systems-standalone.php
+│   └── functions-smart-systems.php
+│
+├── Configuration & Deployment
+│   ├── .env.example            # Environment template
+│   ├── requirements.txt        # Python dependencies
+│   ├── package.json            # Node.js dependencies
+│   ├── DEPLOY-TO-PRODUCTION.sh # Deployment script
+│   └── .gitignore
+│
+└── Documentation
+    ├── README.md
+    ├── GET_API_TOKEN.md
+    ├── DAILY_BOARD_USAGE.md
+    └── WEB_INTERFACE_GUIDE.md
 ```
 
-### Daily Execution (Windows)
-Use Task Scheduler:
-1. Open Task Scheduler
-2. Create Basic Task
-3. Set trigger to Daily
-4. Action: Start a Program
-5. Program: `python`
-6. Arguments: `scraper.py`
-7. Start in: `C:\path\to\DD`
+## 🔒 Security
 
-## File Structure
+- Environment variables gitignored (`.env`)
+- API keys never committed
+- Input sanitization for all forms
+- CORS protection enabled
+
+## 🚨 Troubleshooting
+
+### Python Scraper Issues
+
+**"Template file not found"**
+- Create `template.xlsx` in project directory
+
+**"No items matching date filter"**
+- Verify `DATE_COLUMN_NAME` matches Monday.com column exactly
+- Check items exist with target date
+
+**API Errors**
+- Verify API token and Board ID
+- Check board access permissions
+
+### Web Interface Issues
+
+**Email not sending**
+- Verify `RESEND_API_KEY` in `.env`
+- Check Resend dashboard
+
+**3D page not loading**
+- Check browser WebGL support
+- Clear browser cache
+
+## 📝 Environment Variables
+
+```bash
+# Monday.com API Configuration
+MONDAY_API_TOKEN=your_api_token_here
+MONDAY_BOARD_ID=your_board_id_here
+
+# Email Service Configuration
+RESEND_API_KEY=your_resend_api_key_here
 ```
-DD/
-├── scraper.py              # Main script
-├── monday_client.py        # Monday.com API client
-├── excel_handler.py        # Excel template handler
-├── config.py               # Configuration
-├── requirements.txt        # Python dependencies
-├── .env                    # Your credentials (create this)
-├── .env.example           # Example credentials file
-├── template.xlsx          # Your Excel template (create this)
-├── output/                # Generated Excel files
-└── README.md              # This file
+
+## 🌐 Production Deployment
+
+```bash
+./DEPLOY-TO-PRODUCTION.sh
 ```
 
-## Troubleshooting
+## 📞 Support
 
-### "Template file not found"
-Create a `template.xlsx` file in the DD directory.
+For technical support:
+- **Email**: info@manageonsite.com
+- **Website**: https://manageonsite.com
 
-### "No items matching date filter"
-- Check that `DATE_COLUMN_NAME` in `config.py` matches your Monday.com column name exactly
-- Verify items exist on your board with today's date
-- Check date format in Monday.com
+---
 
-### API Errors
-- Verify your API token is correct
-- Verify your Board ID is correct
-- Check you have access to the board
-
-## Customization
-
-You can customize the scraper by editing:
-- `config.py` - Column mappings, date column name, output folder
-- `scraper.py` - Main logic, filtering, data processing
-- `monday_client.py` - API queries and data extraction
-- `excel_handler.py` - Excel formatting and cell placement
+**Built for efficient Monday.com workflow automation and scheduling** 📅🚀

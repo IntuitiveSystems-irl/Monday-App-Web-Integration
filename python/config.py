@@ -9,8 +9,8 @@ MONDAY_API_URL = "https://api.monday.com/v2"
 
 DATE_COLUMN_ID = "date"
 DATE_COLUMN_NAME = "Due date"
-EXCEL_TEMPLATE_PATH = "template.xlsx"
-OUTPUT_FOLDER = "output"
+EXCEL_TEMPLATE_PATH = os.path.join(os.path.dirname(__file__), "template.xlsx")
+OUTPUT_FOLDER = os.path.join(os.path.dirname(__file__), "output")
 
 COLUMN_MAPPINGS = {
     'name': 'A',

@@ -67,39 +67,41 @@ This project provides two main components:
    - **Board ID**: From board URL: `https://yourcompany.monday.com/boards/1234567890`
 
 4. **Create Excel Template**
-   Create `template.xlsx` with your desired layout
+   Create `python/template.xlsx` with your desired layout
 
 5. **Configure Column Mappings**
-   Edit `config.py`:
+   Edit `python/config.py`:
    ```python
    COLUMN_MAPPINGS = {
-       'name': 'A2',
-       'status': 'B2',
-       'date': 'C2',
+       'name': 'A',
+       'status': 'B',
+       'date': 'C',
    }
    DATE_COLUMN_NAME = "Date"
    ```
 
 6. **Run the Scraper**
    ```bash
-   python scraper.py
+   python python/scraper.py
    ```
 
 ### Web Interface Setup
 
 1. **Install Node Dependencies**
    ```bash
+   cd web
    npm install
    ```
 
 2. **Configure Environment**
-   Add to `.env`:
+   Add to `.env` (in root directory):
    ```
    RESEND_API_KEY=your_resend_api_key_here
    ```
 
 3. **Run Development Server**
    ```bash
+   cd web
    npm run dev
    ```
 
@@ -114,7 +116,7 @@ This project provides two main components:
 
 **Basic Usage:**
 ```bash
-python scraper.py
+python python/scraper.py
 ```
 
 **Custom Date Filtering:**
@@ -127,57 +129,53 @@ scraper.scrape_and_export(target_date=target_date)
 **Automation (Mac/Linux):**
 ```bash
 crontab -e
-# Add: 0 9 * * * cd /Users/lindsay/DD && /usr/bin/python3 scraper.py
+# Add: 0 9 * * * cd /Users/lindsay/DD && /usr/bin/python3 python/scraper.py
 ```
-
-### Testing & Inspection
-
-- **Test API Connection**: `python test_api_connection.py`
-- **Inspect Board Structure**: `python inspect_board.py`
-- **Test Scraper**: `python test_scraper.py`
 
 ## 📁 Project Structure
 
 ```
 Monday-App-Web-Integration/
-├── Python Scraper Components
+├── python/                     # Python Scraper Components
 │   ├── scraper.py              # Main scraper script
 │   ├── monday_client.py        # Monday.com API client
 │   ├── excel_handler.py        # Excel template handler
 │   ├── config.py               # Configuration
-│   ├── test_api_connection.py  # API testing
-│   ├── inspect_board.py        # Board inspection tool
-│   ├── test_scraper.py         # Scraper testing
+│   ├── web_config.py           # Web configuration
 │   ├── template.xlsx           # Excel template
-│   └── output/                 # Generated Excel files
+│   ├── output/                 # Generated Excel files
+│   └── uploads/                # Upload directory
 │
-├── Web Interface Components
+├── web/                        # Web Interface Components
 │   ├── index.html              # Main landing page
 │   ├── index-3d.html           # 3D interactive version
 │   ├── index-3d-v2.html        # Enhanced 3D experience
 │   ├── mobile.html             # Mobile-optimized view
 │   ├── mobile-pitch.html       # Mobile pitch presentation
-│   ├── api/contact.js          # Contact form handler
-│   ├── templates/index.html    # Web templates
-│   └── web_config.py           # Web configuration
+│   ├── api/                    # API endpoints
+│   │   └── contact.js          # Contact form handler
+│   ├── templates/              # Web templates
+│   │   └── index.html
+│   └── package.json            # Node.js dependencies
 │
-├── WordPress Integration
+├── wordpress/                  # WordPress Integration
 │   ├── page-smart-systems.php
 │   ├── page-smart-systems-standalone.php
-│   └── functions-smart-systems.php
+│   ├── functions-smart-systems.php
+│   ├── send-email.php
+│   └── DEPLOY-TO-PRODUCTION.sh # Deployment script
 │
-├── Configuration & Deployment
-│   ├── .env.example            # Environment template
-│   ├── requirements.txt        # Python dependencies
-│   ├── package.json            # Node.js dependencies
-│   ├── DEPLOY-TO-PRODUCTION.sh # Deployment script
-│   └── .gitignore
+├── docs/                       # Documentation
+│   ├── GET_API_TOKEN.md
+│   ├── DAILY_BOARD_USAGE.md
+│   ├── WEB_INTERFACE_GUIDE.md
+│   └── CONTRIBUTING.md
 │
-└── Documentation
-    ├── README.md
-    ├── GET_API_TOKEN.md
-    ├── DAILY_BOARD_USAGE.md
-    └── WEB_INTERFACE_GUIDE.md
+├── .env.example                # Environment template
+├── .gitignore                  # Git ignore rules
+├── requirements.txt            # Python dependencies
+├── LICENSE                     # License file
+└── README.md                   # This file
 ```
 
 ## 🔒 Security

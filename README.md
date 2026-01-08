@@ -227,11 +227,45 @@ RESEND_API_KEY=your_resend_api_key_here
 ./DEPLOY-TO-PRODUCTION.sh
 ```
 
+## 🏪 GitHub Marketplace
+
+This app is available as a **free GitHub App** on GitHub Marketplace!
+
+### Features as a GitHub App
+- Automatically comment on pull requests with Monday.com integration info
+- Track GitHub activity in Monday.com boards
+- Sync project management between platforms
+- Open source and free to use
+
+### Local Testing
+
+Want to test the GitHub App locally? See our [GitHub App Setup Guide](docs/GITHUB_APP_SETUP.md).
+
+Quick start:
+```bash
+cd web
+npm install
+npm run server
+```
+
+### Marketplace Documentation
+- [GitHub Marketplace Listing Info](docs/GITHUB_MARKETPLACE_LISTING.md)
+- [Privacy Policy](docs/PRIVACY_POLICY.md)
+- [Terms of Service](docs/TERMS_OF_SERVICE.md)
+- [Support](docs/SUPPORT.md)
+
 ## 📞 Support
 
 For technical support:
 - **Email**: info@manageonsite.com
 - **Website**: https://manageonsite.com
+- **GitHub Issues**: [Report a bug or request a feature](https://github.com/IntuitiveSystems-irl/Monday-App-Web-Integration/issues)
+
+## 📄 Legal
+
+- **License**: MIT License - see [LICENSE](LICENSE)
+- **Privacy**: [Privacy Policy](docs/PRIVACY_POLICY.md)
+- **Terms**: [Terms of Service](docs/TERMS_OF_SERVICE.md)
 
 ---
 

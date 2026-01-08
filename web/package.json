@@ -1,16 +1,26 @@
 {
-  "name": "backoffice-systems",
+  "name": "monday-app-web-integration",
   "version": "1.0.0",
-  "type": "module",
+  "description": "Monday.com App Web Integration - GitHub App for workflow automation",
   "scripts": {
     "dev": "vercel dev",
     "build": "echo 'Static site - no build needed'",
-    "deploy": "vercel --prod"
+    "deploy": "vercel --prod",
+    "server": "node server.js",
+    "start": "node server.js"
   },
   "dependencies": {
-    "resend": "^3.0.0"
+    "resend": "^3.0.0",
+    "probot": "^12.3.0",
+    "express": "^4.18.2",
+    "dotenv": "^16.3.1"
   },
   "devDependencies": {
-    "vercel": "^33.0.0"
+    "vercel": "^33.0.0",
+    "smee-client": "^1.2.5",
+    "nodemon": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }

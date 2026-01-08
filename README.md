@@ -270,4 +270,4 @@ For technical support:
 ---
 
 **Built for efficient Monday.com workflow automation and scheduling** 📅🚀
-Testing GitHub App Integration
+**Testing GitHub App Integration

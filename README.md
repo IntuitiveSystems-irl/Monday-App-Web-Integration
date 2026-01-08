@@ -1,37 +1,40 @@
-# BackOffice Systems
+# OFFICEOPS
 
-**Operational Cleanup & Automation Platform**
+**Scheduling System Built with Monday.com and Excel**
 
-A modern landing page and contact system for BackOffice Systems, featuring immersive 3D visualizations and smart systems implementation services. Built for operational efficiency consultants helping businesses streamline their workflows and automate processes.
+A comprehensive scheduling and operations management system that integrates Monday.com workflow automation with Excel-based data management. Built for businesses that need powerful scheduling capabilities with familiar spreadsheet interfaces.
 
 ## 🎯 Overview
 
-BackOffice Systems provides operational cleanup and automation services for businesses looking to optimize their workflows, implement smart systems, and improve team efficiency. This project includes:
+OFFICEOPS is a scheduling system that bridges the gap between Monday.com's powerful project management capabilities and Excel's flexibility for data manipulation. This system enables teams to:
 
-- **3D Interactive Landing Page**: Immersive WebGL-based landing experience
-- **Mobile-Optimized Views**: Responsive design for all devices
-- **Contact Form Integration**: Automated email notifications via Resend API
-- **WordPress Integration**: PHP templates for WordPress deployment
-- **Production Deployment**: Automated deployment scripts for live servers
+- **Manage Schedules**: Create and maintain complex scheduling workflows
+- **Automate Operations**: Leverage Monday.com automations for operational efficiency
+- **Excel Integration**: Import/export data seamlessly between Monday.com and Excel
+- **Web Interface**: Access scheduling tools through a modern web interface
+- **Mobile Access**: View and manage schedules on mobile devices
 
 ## ✨ Features
 
-- **Immersive 3D Experience**: Interactive WebGL landing page with smooth animations
-- **Multiple Page Variants**:
-  - `index.html` - Standard landing page
-  - `index-3d.html` - 3D interactive version
-  - `index-3d-v2.html` - Enhanced 3D experience
-  - `mobile.html` - Mobile-optimized view
-  - `mobile-pitch.html` - Mobile pitch presentation
-- **Smart Contact Forms**: Capture company info, team size, location, and engagement preferences
-- **Email Automation**: Resend API integration for instant notifications
-- **WordPress Templates**: Ready-to-use PHP templates for WordPress sites
-- **Production Ready**: Deployment scripts for seamless updates
+- **Monday.com Integration**: Full integration with Monday.com boards and workflows
+- **Excel Data Management**: Import/export scheduling data to/from Excel spreadsheets
+- **Multiple Views**:
+  - `index.html` - Main scheduling dashboard
+  - `index-3d.html` - Visual schedule representation
+  - `index-3d-v2.html` - Enhanced visual scheduling view
+  - `mobile.html` - Mobile scheduling interface
+  - `mobile-pitch.html` - Mobile presentation view
+- **Contact Forms**: Request scheduling assistance or system access
+- **Email Notifications**: Automated notifications via Resend API
+- **WordPress Integration**: Embed scheduling system in WordPress sites
+- **Production Ready**: Deployment scripts for live environments
 
 ## 🛠 Tech Stack
 
+- **Scheduling Platform**: Monday.com API
+- **Data Management**: Microsoft Excel (Import/Export)
 - **Frontend**: HTML5, CSS3, JavaScript (ES6+)
-- **3D Graphics**: WebGL / Three.js
+- **Visualization**: WebGL / Three.js (for schedule visualization)
 - **Backend**: PHP, Node.js (Serverless Functions)
 - **Email Service**: Resend API
 - **Deployment**: Vercel, Custom Server (PM2)
@@ -39,6 +42,8 @@ BackOffice Systems provides operational cleanup and automation services for busi
 
 ## 📋 Prerequisites
 
+- **Monday.com Account**: Active Monday.com workspace with API access
+- **Microsoft Excel**: For data import/export functionality
 - Node.js 18.x or higher
 - PHP 7.4+ (for WordPress integration)
 - Resend API account and API key
@@ -64,9 +69,11 @@ BackOffice Systems provides operational cleanup and automation services for busi
    cp .env.example .env
    ```
    
-   Edit `.env` and add your Resend API key:
+   Edit `.env` and add your API keys:
    ```
    RESEND_API_KEY=your_resend_api_key_here
+   MONDAY_API_KEY=your_monday_api_key_here
+   MONDAY_BOARD_ID=your_board_id_here
    ```
 
 4. **Run development server**
@@ -95,6 +102,22 @@ BackOffice Systems provides operational cleanup and automation services for busi
 
 3. **Create a new page** in WordPress and select "Smart Systems Landing Page" template
 
+## 📅 Scheduling System Features
+
+### Monday.com Integration
+
+- **Board Synchronization**: Sync scheduling data with Monday.com boards
+- **Automated Workflows**: Trigger automations based on schedule changes
+- **Real-time Updates**: Live updates from Monday.com to the web interface
+- **Custom Fields**: Map Excel columns to Monday.com board columns
+
+### Excel Integration
+
+- **Import Schedules**: Upload Excel files to populate Monday.com boards
+- **Export Data**: Download current schedules as Excel spreadsheets
+- **Bulk Operations**: Update multiple schedule items via Excel
+- **Template Support**: Use pre-formatted Excel templates for consistency
+
 ## 📧 Contact Form Setup
 
 The contact form captures:
@@ -104,7 +127,7 @@ The contact form captures:
 - **Location**
 - **Engagement Type** (On-site, Remote, Flexible)
 - **Current Tools & Systems**
-- **Improvement Goals**
+- **Scheduling Needs**
 
 ### Email Configuration
 
@@ -168,6 +191,21 @@ OFFICEOPS/
 
 ## 🎨 Customization
 
+### Monday.com Configuration
+
+Update Monday.com settings in your `.env` file:
+```bash
+MONDAY_API_KEY=your_api_key
+MONDAY_BOARD_ID=your_board_id
+```
+
+### Excel Templates
+
+Customize Excel import/export templates to match your scheduling needs:
+- Column mappings
+- Date formats
+- Custom fields
+
 ### Branding
 
 Update colors and branding in the HTML/CSS:
@@ -175,13 +213,9 @@ Update colors and branding in the HTML/CSS:
 - **Accent Color**: `#C1403D` (Red)
 - **Background**: `#fff` (White)
 
-### Contact Form Fields
+### Schedule Visualization
 
-Modify form fields in `api/contact.js` and corresponding HTML files.
-
-### 3D Scene
-
-Customize the 3D experience by editing the WebGL/Three.js code in `index-3d-v2.html`.
+Customize the 3D schedule visualization by editing the WebGL/Three.js code in `index-3d-v2.html`.
 
 ## 🔒 Security
 
@@ -232,7 +266,9 @@ php test-resend.php
 Required environment variables:
 
 ```bash
-RESEND_API_KEY=re_xxxxxxxxxxxxx  # Your Resend API key
+MONDAY_API_KEY=ey_xxxxxxxxxxxxx     # Your Monday.com API key
+MONDAY_BOARD_ID=1234567890          # Your Monday.com board ID
+RESEND_API_KEY=re_xxxxxxxxxxxxx     # Your Resend API key
 ```
 
 ## 🤝 Contributing
@@ -244,7 +280,7 @@ RESEND_API_KEY=re_xxxxxxxxxxxxx  # Your Resend API key
 
 ## 📄 License
 
-Proprietary - BackOffice Systems
+Proprietary - OFFICEOPS Scheduling System
 
 ## 🔗 Links
 
@@ -260,4 +296,4 @@ For technical support or questions:
 
 ---
 
-**Built for operational excellence** 🚀
+**Built for efficient scheduling and operations management** 📅🚀

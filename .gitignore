@@ -1,0 +1,7 @@
+.env
+output/
+*.xlsx
+!template.xlsx
+__pycache__/
+*.pyc
+.DS_Store
